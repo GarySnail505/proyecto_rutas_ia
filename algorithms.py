@@ -88,7 +88,9 @@ def _format_frontier(
     for priority, _, node, g_cost in ordered:
         h_cost = heuristic(node, goal)
         f_cost = g_cost + h_cost
-        parts.append(f"{node} [p={priority:.2f}, g={g_cost:.2f}, h={h_cost:.2f}, f={f_cost:.2f}]")
+        parts.append(
+            f"{node} [p={priority:.2f}, g={g_cost:.2f}, h={h_cost:.2f}, f={f_cost:.2f}]"
+        )
     return " | ".join(parts) if parts else "Vacía"
 
 
@@ -135,7 +137,9 @@ def priority_search(
 
     counter = 0
     start_priority = get_priority(start, 0.0)
-    frontier: List[Tuple[float, int, Node, float]] = [(start_priority, counter, start, 0.0)]
+    frontier: List[Tuple[float, int, Node, float]] = [
+        (start_priority, counter, start, 0.0)
+    ]
     heapq.heapify(frontier)
 
     parents: Dict[Node, Optional[Node]] = {start: None}
@@ -224,7 +228,11 @@ def priority_search(
                     "h": round(current_h, 3),
                     "f": round(current_g + current_h, 3),
                     "prioridad_usada": round(priority, 3),
-                    "vecinos_generados": " | ".join(generated_neighbors) if generated_neighbors else "Ninguno",
+                    "vecinos_generados": (
+                        " | ".join(generated_neighbors)
+                        if generated_neighbors
+                        else "Ninguno"
+                    ),
                     "frontera_antes": frontier_before,
                     "frontera_despues": _format_frontier(frontier, goal, heuristic),
                 }
@@ -263,7 +271,9 @@ def astar(graph: Graph, start: Node, goal: Node, heuristic: Heuristic) -> Search
     return priority_search(graph, start, goal, heuristic, "A*")
 
 
-def build_result_explanation(algorithm: str, path: List[Node], total_cost: float) -> str:
+def build_result_explanation(
+    algorithm: str, path: List[Node], total_cost: float
+) -> str:
     """Genera una explicación corta para mostrar debajo de cada algoritmo."""
     route = " → ".join(path)
     if algorithm == "UCS":
@@ -304,7 +314,9 @@ def check_heuristic_admissibility(
         true_cost = dijkstra_costs(graph, node).get(goal, math.inf)
         h_value = euclidean_heuristic(node, goal, positions, scale)
         if h_value > true_cost + 1e-9:
-            problems.append({"nodo": node, "h(n)": h_value, "costo_optimo_real": true_cost})
+            problems.append(
+                {"nodo": node, "h(n)": h_value, "costo_optimo_real": true_cost}
+            )
     return len(problems) == 0, problems
 
 
@@ -331,8 +343,24 @@ def check_heuristic_consistency(
             hv = euclidean_heuristic(v, goal, positions, scale)
 
             if hu > cost + hv + 1e-9:
-                problems.append({"arista": f"{u} - {v}", "caso": f"h({u}) > c + h({v})", "h_u": hu, "costo": cost, "h_v": hv})
+                problems.append(
+                    {
+                        "arista": f"{u} - {v}",
+                        "caso": f"h({u}) > c + h({v})",
+                        "h_u": hu,
+                        "costo": cost,
+                        "h_v": hv,
+                    }
+                )
             if hv > cost + hu + 1e-9:
-                problems.append({"arista": f"{u} - {v}", "caso": f"h({v}) > c + h({u})", "h_u": hv, "costo": cost, "h_v": hu})
+                problems.append(
+                    {
+                        "arista": f"{u} - {v}",
+                        "caso": f"h({v}) > c + h({u})",
+                        "h_u": hv,
+                        "costo": cost,
+                        "h_v": hu,
+                    }
+                )
 
     return len(problems) == 0, problems

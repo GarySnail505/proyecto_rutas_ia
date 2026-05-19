@@ -25,6 +25,7 @@ CITY_POSITIONS: Position = {
     "Villaflora": (1.0, 2.4),
     "El Recreo": (1.4, 3.3),
     "La Magdalena": (0.5, 4.1),
+    "Loma de Puengasí": (0.0, 4.5),
     "Centro Histórico": (1.6, 5.0),
     "La Marín": (2.3, 5.2),
     "Universidad Central": (1.1, 6.3),
@@ -41,37 +42,166 @@ CITY_POSITIONS: Position = {
 # 17 nodos y 31 aristas: cumple el requisito de mínimo 15 nodos y 25 aristas.
 # Cada arista es no dirigida.
 BASE_EDGES: List[dict] = [
-    {"u": "Quitumbe", "v": "Chillogallo", "cost": 8, "reason": "Conexión urbana sur con tráfico bajo-medio."},
-    {"u": "Quitumbe", "v": "Solanda", "cost": 7, "reason": "Tramo urbano directo de baja distancia."},
-    {"u": "Quitumbe", "v": "Villaflora", "cost": 15, "reason": "Ruta más larga por conexión sur-centro."},
-    {"u": "Chillogallo", "v": "Solanda", "cost": 6, "reason": "Conexión barrial cercana."},
-    {"u": "Chillogallo", "v": "Villaflora", "cost": 11, "reason": "Ruta alternativa con mayor congestión."},
-    {"u": "Solanda", "v": "Villaflora", "cost": 6, "reason": "Tramo corto hacia eje de movilidad central."},
-    {"u": "Solanda", "v": "El Recreo", "cost": 9, "reason": "Conexión directa hacia estación comercial."},
-    {"u": "Villaflora", "v": "El Recreo", "cost": 5, "reason": "Tramo corto y frecuente."},
-    {"u": "El Recreo", "v": "La Magdalena", "cost": 7, "reason": "Conexión urbana con tráfico medio."},
-    {"u": "El Recreo", "v": "La Marín", "cost": 9, "reason": "Eje centro-sur con circulación densa."},
-    {"u": "La Magdalena", "v": "Centro Histórico", "cost": 7, "reason": "Ingreso hacia zona patrimonial."},
-    {"u": "Centro Histórico", "v": "La Marín", "cost": 3, "reason": "Sectores cercanos dentro del centro."},
-    {"u": "Centro Histórico", "v": "Universidad Central", "cost": 6, "reason": "Conexión centro-norte corta."},
-    {"u": "La Marín", "v": "Universidad Central", "cost": 7, "reason": "Ruta urbana de conexión al centro-norte."},
-    {"u": "La Marín", "v": "La Floresta", "cost": 8, "reason": "Conexión hacia zona centro-oriente."},
-    {"u": "Universidad Central", "v": "La Floresta", "cost": 8, "reason": "Tramo alternativo por zona universitaria."},
-    {"u": "Universidad Central", "v": "La Carolina", "cost": 9, "reason": "Conexión norte por eje universitario-comercial."},
-    {"u": "La Floresta", "v": "La Carolina", "cost": 7, "reason": "Tramo corto entre zonas comerciales."},
-    {"u": "La Carolina", "v": "Iñaquito", "cost": 4, "reason": "Sectores vecinos del hipercentro."},
-    {"u": "Iñaquito", "v": "El Labrador", "cost": 5, "reason": "Conexión norte directa."},
-    {"u": "La Carolina", "v": "El Labrador", "cost": 8, "reason": "Alternativa norte con más distancia."},
-    {"u": "El Labrador", "v": "Cotocollao", "cost": 12, "reason": "Tramo norte-occidental con congestión media."},
-    {"u": "Cotocollao", "v": "Carcelén", "cost": 7, "reason": "Conexión entre sectores del norte."},
-    {"u": "El Labrador", "v": "Carcelén", "cost": 8, "reason": "Ruta directa hacia el extremo norte."},
-    {"u": "Iñaquito", "v": "Cotocollao", "cost": 14, "reason": "Alternativa norte-occidente más larga."},
-    {"u": "Cotocollao", "v": "Chillogallo", "cost": 26, "reason": "Bypass occidental largo; útil como ruta alternativa."},
-    {"u": "La Floresta", "v": "Cumbayá", "cost": 12, "reason": "Salida hacia valle con costo moderado."},
-    {"u": "La Marín", "v": "Cumbayá", "cost": 30, "reason": "Ruta aparentemente directa, pero penalizada por tráfico y pendiente."},
-    {"u": "La Carolina", "v": "Cumbayá", "cost": 20, "reason": "Conexión al valle con tráfico medio-alto."},
-    {"u": "Cumbayá", "v": "Tumbaco", "cost": 10, "reason": "Tramo de valle entre parroquias cercanas."},
-    {"u": "La Floresta", "v": "Tumbaco", "cost": 27, "reason": "Ruta directa al valle, pero más costosa que pasar por Cumbayá."},
+    {
+        "u": "Quitumbe",
+        "v": "Chillogallo",
+        "cost": 8,
+    },
+    {
+        "u": "Quitumbe",
+        "v": "Solanda",
+        "cost": 7,
+    },
+    {
+        "u": "Quitumbe",
+        "v": "Villaflora",
+        "cost": 15,
+    },
+    {
+        "u": "Chillogallo",
+        "v": "Solanda",
+        "cost": 6,
+    },
+    {
+        "u": "Chillogallo",
+        "v": "Villaflora",
+        "cost": 11,
+    },
+    {
+        "u": "Solanda",
+        "v": "Villaflora",
+        "cost": 6,
+    },
+    {
+        "u": "Solanda",
+        "v": "El Recreo",
+        "cost": 9,
+    },
+    {
+        "u": "Villaflora",
+        "v": "El Recreo",
+        "cost": 5,
+    },
+    {
+        "u": "El Recreo",
+        "v": "La Magdalena",
+        "cost": 7,
+    },
+    {
+        "u": "El Recreo",
+        "v": "La Marín",
+        "cost": 9,
+    },
+    {
+        "u": "La Magdalena",
+        "v": "Centro Histórico",
+        "cost": 7,
+    },
+    {
+        "u": "Centro Histórico",
+        "v": "La Marín",
+        "cost": 3,
+    },
+    {
+        "u": "Centro Histórico",
+        "v": "Universidad Central",
+        "cost": 6,
+    },
+    {
+        "u": "La Marín",
+        "v": "Universidad Central",
+        "cost": 7,
+    },
+    {
+        "u": "La Marín",
+        "v": "La Floresta",
+        "cost": 8,
+    },
+    {
+        "u": "Universidad Central",
+        "v": "La Floresta",
+        "cost": 8,
+    },
+    {
+        "u": "Universidad Central",
+        "v": "La Carolina",
+        "cost": 9,
+    },
+    {
+        "u": "La Floresta",
+        "v": "La Carolina",
+        "cost": 7,
+    },
+    {
+        "u": "La Carolina",
+        "v": "Iñaquito",
+        "cost": 4,
+    },
+    {
+        "u": "Iñaquito",
+        "v": "El Labrador",
+        "cost": 5,
+    },
+    {
+        "u": "La Carolina",
+        "v": "El Labrador",
+        "cost": 8,
+    },
+    {
+        "u": "El Labrador",
+        "v": "Cotocollao",
+        "cost": 12,
+    },
+    {
+        "u": "Cotocollao",
+        "v": "Carcelén",
+        "cost": 7,
+    },
+    {
+        "u": "El Labrador",
+        "v": "Carcelén",
+        "cost": 8,
+    },
+    {
+        "u": "Iñaquito",
+        "v": "Cotocollao",
+        "cost": 14,
+    },
+    {
+        "u": "Cotocollao",
+        "v": "Chillogallo",
+        "cost": 26,
+    },
+    {
+        "u": "La Floresta",
+        "v": "Cumbayá",
+        "cost": 12,
+    },
+    {
+        "u": "La Marín",
+        "v": "Cumbayá",
+        "cost": 30,
+    },
+    {
+        "u": "La Carolina",
+        "v": "Cumbayá",
+        "cost": 20,
+    },
+    {
+        "u": "Cumbayá",
+        "v": "Tumbaco",
+        "cost": 10,
+    },
+    {
+        "u": "La Floresta",
+        "v": "Tumbaco",
+        "cost": 27,
+    },
+    {
+        "u": "La Magdalena",
+        "v": "Loma de Puengasí",
+        "cost": 35,
+    },
 ]
 
 # Casos preparados para la exposición y pruebas.
@@ -80,7 +210,10 @@ PREDEFINED_CASES = {
     "Caso 1 - GBFS se equivoca: Solanda → Tumbaco": ("Solanda", "Tumbaco"),
     "Caso 2 - Ruta sur a valle: Quitumbe → Tumbaco": ("Quitumbe", "Tumbaco"),
     "Caso 3 - Norte a valle: Cotocollao → Cumbayá": ("Cotocollao", "Cumbayá"),
-    "Caso 4 - Ruta corta urbana: Universidad Central → El Labrador": ("Universidad Central", "El Labrador"),
+    "Caso 4 - Ruta corta urbana: Universidad Central → El Labrador": (
+        "Universidad Central",
+        "El Labrador",
+    ),
 }
 
 TRAFFIC_PROFILES = {
@@ -115,7 +248,9 @@ def build_graph(profile_name: str = "Normal") -> Graph:
     """
     graph: Graph = {node: {} for node in CITY_POSITIONS}
     profile = TRAFFIC_PROFILES.get(profile_name, {})
-    normalized_profile = {normalize_edge(u, v): factor for (u, v), factor in profile.items()}
+    normalized_profile = {
+        normalize_edge(u, v): factor for (u, v), factor in profile.items()
+    }
 
     for edge in BASE_EDGES:
         u, v = edge["u"], edge["v"]
