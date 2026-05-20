@@ -38,7 +38,7 @@ CITY_POSITIONS: Position = {
     "Tumbaco": (7.1, 7.4),
 }
 
-# 17 nodos y 31 aristas: cumple el requisito de mínimo 15 nodos y 25 aristas.
+# 17 nodos y 31 aristas: requisito de mínimo 15 nodos y 25 aristas.
 # Cada arista es no dirigida.
 BASE_EDGES: List[dict] = [
     {"u": "Quitumbe", "v": "Chillogallo", "cost": 8, "reason": "Conexión urbana sur con tráfico bajo-medio."},
@@ -74,7 +74,6 @@ BASE_EDGES: List[dict] = [
     {"u": "La Floresta", "v": "Tumbaco", "cost": 27, "reason": "Ruta directa al valle, pero más costosa que pasar por Cumbayá."},
 ]
 
-# Casos preparados para la exposición y pruebas.
 # El primero está diseñado para mostrar que GBFS puede equivocarse.
 PREDEFINED_CASES = {
     "Caso 1 - GBFS se equivoca: Solanda → Tumbaco": ("Solanda", "Tumbaco"),
