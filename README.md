@@ -9,7 +9,7 @@ Proyecto de Inteligencia Artificial para comparar tres algoritmos de búsqueda s
 El escenario usado es un grafo semi-real basado en sectores de Quito. Los pesos de las aristas representan un costo combinado de traslado:
 
 ```text
-costo = distancia aproximada + tráfico + dificultad de circulación
+costo = distancia aproximada + tráfico
 ```
 
 El proyecto está preparado para ejecutarse con **Streamlit** y presentar una comparación visual en tres espacios divididos: UCS, GBFS y A\*.
