@@ -11,7 +11,14 @@ from algorithms import (
     gbfs,
     ucs,
 )
-from graph_data import BASE_EDGES, CITY_POSITIONS, PREDEFINED_CASES, TRAFFIC_PROFILES, build_graph, get_edge_reasons
+from graph_data import (
+    BASE_EDGES,
+    CITY_POSITIONS,
+    PREDEFINED_CASES,
+    TRAFFIC_PROFILES,
+    build_graph,
+    get_edge_reasons,
+)
 from visualization import make_graph_figure
 
 st.set_page_config(
@@ -46,7 +53,9 @@ def trace_dataframe(result):
 
 
 st.title("Sistema de rutas inteligentes para entregas o transporte")
-st.caption("Comparación de UCS, GBFS y A* sobre un grafo ponderado semi-real basado en Quito.")
+st.caption(
+    "Comparación de UCS, GBFS y A* sobre un grafo ponderado semi-real basado en Quito."
+)
 
 with st.sidebar:
     st.header("Configuración")
@@ -64,8 +73,12 @@ with st.sidebar:
     st.divider()
     st.metric("Nodos", len(graph))
     st.metric("Aristas", len(BASE_EDGES))
-    st.write("**Costo de arista:** distancia aproximada + tráfico + dificultad de circulación.")
-    st.write("**Heurística:** distancia euclidiana estimada entre coordenadas del mapa.")
+    st.write(
+        "**Costo de arista:** distancia aproximada + tráfico + dificultad de circulación."
+    )
+    st.write(
+        "**Heurística:** distancia euclidiana estimada entre coordenadas del mapa."
+    )
 
 if start == goal:
     st.warning("El origen y el destino son iguales. Selecciona dos nodos diferentes.")
@@ -139,50 +152,52 @@ for col, result in columns:
             st.write(" → ".join(result.expansion_order))
 
         with st.expander("Ver frontera / cola de prioridad"):
-            st.dataframe(trace_dataframe(result), use_container_width=True, hide_index=True)
+            st.dataframe(
+                trace_dataframe(result), use_container_width=True, hide_index=True
+            )
 
-st.subheader("4. Análisis de heurística")
-admissible, admissibility_problems = check_heuristic_admissibility(graph, CITY_POSITIONS, goal, HEURISTIC_SCALE)
-consistent, consistency_problems = check_heuristic_consistency(graph, CITY_POSITIONS, goal, HEURISTIC_SCALE)
+# st.subheader("4. Análisis de heurística")
+# admissible, admissibility_problems = check_heuristic_admissibility(graph, CITY_POSITIONS, goal, HEURISTIC_SCALE)
+# consistent, consistency_problems = check_heuristic_consistency(graph, CITY_POSITIONS, goal, HEURISTIC_SCALE)
 
-h_col1, h_col2 = st.columns(2)
-with h_col1:
-    st.metric("Heurística admisible", "Sí" if admissible else "No")
-    st.write(
-        "Una heurística es admisible si nunca sobreestima el costo real mínimo hasta la meta: "
-        "h(n) ≤ costo óptimo real."
-    )
-    if not admissible:
-        st.dataframe(pd.DataFrame(admissibility_problems), use_container_width=True, hide_index=True)
+# h_col1, h_col2 = st.columns(2)
+# with h_col1:
+#     st.metric("Heurística admisible", "Sí" if admissible else "No")
+#     st.write(
+#         "Una heurística es admisible si nunca sobreestima el costo real mínimo hasta la meta: "
+#         "h(n) ≤ costo óptimo real."
+#     )
+#     if not admissible:
+#         st.dataframe(pd.DataFrame(admissibility_problems), use_container_width=True, hide_index=True)
 
-with h_col2:
-    st.metric("Heurística consistente", "Sí" if consistent else "No")
-    st.write(
-        "Una heurística es consistente si para toda arista se cumple: "
-        "h(u) ≤ c(u,v) + h(v)."
-    )
-    if not consistent:
-        st.dataframe(pd.DataFrame(consistency_problems), use_container_width=True, hide_index=True)
+# with h_col2:
+#     st.metric("Heurística consistente", "Sí" if consistent else "No")
+#     st.write(
+#         "Una heurística es consistente si para toda arista se cumple: "
+#         "h(u) ≤ c(u,v) + h(v)."
+#     )
+#     if not consistent:
+#         st.dataframe(pd.DataFrame(consistency_problems), use_container_width=True, hide_index=True)
 
-with st.expander("Justificación de los pesos del grafo"):
-    reasons = get_edge_reasons()
-    rows = []
-    for edge in BASE_EDGES:
-        rows.append(
-            {
-                "Arista": f"{edge['u']} - {edge['v']}",
-                "Costo base": edge["cost"],
-                "Justificación": reasons[(min(edge['u'], edge['v']), max(edge['u'], edge['v']))],
-            }
-        )
-    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+# with st.expander("Justificación de los pesos del grafo"):
+#     reasons = get_edge_reasons()
+#     rows = []
+#     for edge in BASE_EDGES:
+#         rows.append(
+#             {
+#                 "Arista": f"{edge['u']} - {edge['v']}",
+#                 "Costo base": edge["cost"],
+#                 "Justificación": reasons[(min(edge['u'], edge['v']), max(edge['u'], edge['v']))],
+#             }
+#         )
+#     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
-with st.expander("Cómo defender la demo en clase"):
-    st.markdown(
-        """
-- **UCS** expande el nodo con menor `g(n)`. Por eso encuentra la ruta de menor costo cuando todos los pesos son positivos.
-- **GBFS** expande el nodo con menor `h(n)`. Puede ser rápido, pero no garantiza optimalidad porque ignora el costo ya recorrido.
-- **A\\*** expande con `f(n)=g(n)+h(n)`. Si la heurística es admisible y consistente, mantiene optimalidad y suele expandir menos nodos que UCS.
-- Para explicar la traza, usa la tabla de frontera: muestra qué nodo se expandió, qué vecinos entraron a la cola y qué prioridad tuvo cada uno.
-        """
-    )
+# with st.expander("Cómo defender la demo en clase"):
+#     st.markdown(
+#         """
+# - **UCS** expande el nodo con menor `g(n)`. Por eso encuentra la ruta de menor costo cuando todos los pesos son positivos.
+# - **GBFS** expande el nodo con menor `h(n)`. Puede ser rápido, pero no garantiza optimalidad porque ignora el costo ya recorrido.
+# - **A\\*** expande con `f(n)=g(n)+h(n)`. Si la heurística es admisible y consistente, mantiene optimalidad y suele expandir menos nodos que UCS.
+# - Para explicar la traza, usa la tabla de frontera: muestra qué nodo se expandió, qué vecinos entraron a la cola y qué prioridad tuvo cada uno.
+#         """
+#     )
